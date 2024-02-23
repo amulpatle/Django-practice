@@ -33,3 +33,27 @@ def UserRegister(request):
             else:
                 message = "Password and Confirm Password Doesnot Match"
                 return render(request,"app/register.html",{'msg':message})
+
+
+def LoginPage(request):
+    return render(request,"app/login.html")
+
+
+def LoginUser(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        
+        user = User.objects.get(Email = email)
+        if user:
+            if user.Password == password:
+                request.session['Firstname'] = user.Firstname
+                request.session['Lastname'] = user.Lastname
+                request.session['Email'] = user.Email
+                return render(request,"app/home.html")
+            else :
+                message = "Password does not match"
+                return render(request,"app/login.html",{'msg':message})
+        else:
+            message = "User does not exist"
+            return render(request,"app/register.html",{'msg':message})
