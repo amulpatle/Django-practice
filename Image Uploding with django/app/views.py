@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import *
 # Create your views here.
 
@@ -14,5 +14,9 @@ def UploadImage(request):
         pics = request.FILES['image']
         
         newimg = ImageData.objects.create(Imagename=imagename,Image = pics)
-        return render(request,"app/show.html")
+        return redirect('show')
     
+    
+def ImageFetch(request):
+    all_img = ImageData.objects.all()
+    return render(request,"app/show.html",{'key1':all_img})
